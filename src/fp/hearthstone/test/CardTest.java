@@ -20,6 +20,7 @@ public class CardTest {
 			System.out.println("Card 2: " + card2.toString());
 			System.out.println("Card 3: " + card3.toString());
 			System.out.println("Card1 == Card2: " + card1.equals(card2));
+			System.out.println("Card1 == Card2: " + (card1.hashCode() == card2.hashCode()));
 			System.out.println("Card1 == Card3: " + card1.equals(card3));
 			System.out.println("Card1 cmp Card2: " + card1.compareTo(card2));
 			System.out.println("Card1 cmp Card3: " + card1.compareTo(card3));

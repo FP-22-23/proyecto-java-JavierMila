@@ -37,7 +37,7 @@ El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la
 
 Los tipos que se han implementado en el proyecto son los siguientes:
 
-### Tipo Base - Card
+### Tipo Base - `Card`
 Representa una carta concreta.
 **Propiedades**:
 Todas las propiedades son consultables pero no modificables.
