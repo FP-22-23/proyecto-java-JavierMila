@@ -10,11 +10,11 @@ import fp.hearthstone.Card;
 public class CardTest {
 
 	public static void main(String[] args) {
-		Card card1 = new Card(1, false, Set.of(1, 2, 3), Rarity.COMMON, 3, 1.0, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
+		Card card1 = new Card(1, false, Set.of(1, 2, 3), Rarity.COMMON, 3, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
 				new Graphics("Juan García", "link.com", "link.com"), LocalDate.now());
-			Card card2 = new Card(1, 0, Set.of(1, 2, 3), 1, 3, 1.0, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
+			Card card2 = new Card(1, 0, Set.of(1, 2, 3), 1, 3, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
 					"Juan García", "link.com", "link.com", LocalDate.now());
-			Card card3 = new Card(1, false, Set.of(1, 2, 3), Rarity.RARE, 3, 1.0, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
+			Card card3 = new Card(1, false, Set.of(1, 2, 3), Rarity.RARE, 3, 1.0, 1.0, "Juan", "Destruye el mundo", "¡A la batalla!",
 					new Graphics("Juan García", "link.com", "link.com"), LocalDate.now());
 			System.out.println("Card 1: " + card1.toString());
 			System.out.println("Card 2: " + card2.toString());
