@@ -31,6 +31,7 @@ public class Card implements Comparable<Card> {
 		this.rarity = rarity;
 		this.manaCost = manaCost;
 		this.health = health;
+		this.attack = attack;
 		Checkers.check("Must have a name.", name.length() > 0);
 		this.name = name;
 		this.text = text;
@@ -54,6 +55,7 @@ public class Card implements Comparable<Card> {
 		}
 		this.manaCost = manaCost;
 		this.health = health;
+		this.attack = attack;
 		Checkers.check("Must have a name.", name.length() > 0);
 		this.name = name;
 		this.text = text;

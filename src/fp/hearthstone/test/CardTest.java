@@ -1,6 +1,8 @@
 package fp.hearthstone.test;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import fp.common.Graphics;
