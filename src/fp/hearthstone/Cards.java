@@ -23,6 +23,10 @@ public class Cards implements Collection<Card> {
 		this.cards = cards;
 	}
 	
+	public List<Card> getCards() {
+		return cards;
+	}
+	
 	// 1. Existe
 	public boolean exists(Function<Card, Boolean> filter) { // Note: Equivalent to contains, but is required to be made with a loop.
 		for (Card card : cards) {
