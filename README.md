@@ -79,8 +79,8 @@ Todas las propiedades son consultables pero no modificables.
 
 Clase de factoría para construir listas de cartas.
 
-- `Card parseCard(String line)`: pasa de una línea en el formato del CSV a una carta.
-- `List<Card> readCards(String filePath)`: lee el CSV especificado en filePath y genera una lista de cartas, usando `parseCard` en cada línea.
+- `Card parseCard(String line)`: pasa de una línea en el formato del CSV a `Card`.
+- `List<Card> readCards(String filePath)`: lee el CSV especificado en `filePath` y genera una lista de cartas, usando `parseCard` en cada línea.
 
 ### Contenedor - Cards
 
@@ -104,10 +104,10 @@ Implementa Collection<Card>, por lo que implementa:
 entre otras.
 
 **Tratamientos Secuenciales**:
-- `boolean exists(Function<Card, Boolean> filter)`: devuelve `true` si algún elemento de la lista cumple con el filtro, false si no.
-- `<T extends Number> Double average(Function<Card, T> key)`: devuelve el promedio de la llave a lo largo de la lista.
-- `Cards filter(Function<Card, Boolean> filter)`: devuelve una nueva lista que contiene todos los elementos que cumplen con el filtro.
-- `<T> Map<T, Cards> groupedBy(Function<Card, T> groupBy)`: Agrupa las cartas según el valor que devuelve groupBy.
+- `boolean exists(Function<Card, Boolean> filter)`: devuelve `true` si algún elemento de la lista hace que `filter` devuelva `true`, false si no.
+- `<T extends Number> Double average(Function<Card, T> key)`: devuelve el promedio de los valores que devuelve `key` a lo largo de la lista.
+- `Cards filter(Function<Card, Boolean> filter)`: devuelve una nueva lista que contiene todos los elementos que hacen que `filter` devuelva `true`.
+- `<T> Map<T, Cards> groupedBy(Function<Card, T> groupBy)`: Agrupa las cartas según el valor que devuelve `groupBy`.
 - `<T, N extends Number> T accumulate(Function<Card, T> key, BinaryOperator<T> sumOp)`: Usando `sumOp` calcula la suma de los valores que devuelve `key`. `sumOp` es necesario ya que Java no implementa una interfaz para tipos sumables. Generalmente, se desea  usar `Integer::sum` o `Double::sum` como sumOp.
-- `<T, N extends Number> Map<T,N> accumulateGroups(Function<Card, T> groupBy, Function<Card,N> key, BinaryOperator<N> sumOp)`: Agrupa las cartas usando como llaves lo que devuelve groupBy, y como valores correspondientes la suma usando `sumOp` de lo que devuelve `key`.
+- `<T, N extends Number> Map<T,N> accumulateGroups(Function<Card, T> groupBy, Function<Card,N> key, BinaryOperator<N> sumOp)`: Agrupa las cartas usando como llaves lo que devuelve `groupBy`, y como valores correspondientes la suma usando `sumOp` de lo que devuelve `key`.
 
