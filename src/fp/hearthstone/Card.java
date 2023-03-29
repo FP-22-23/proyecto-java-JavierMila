@@ -16,14 +16,13 @@ public class Card implements Comparable<Card> {
 	private Integer manaCost;
 	private Double health;
 	private Double attack;
-	private Double armor;
 	private String name;
 	private String text;
 	private String flavorText;
 	private Graphics graphics;
 	private LocalDate releaseDate;
 	
-	public Card(Integer id, Boolean collectible, Set<Integer> classIds, Rarity rarity, Integer manaCost, Double health, Double attack, Double armor, String name, String text, String flavorText, Graphics graphics, LocalDate releaseDate) {
+	public Card(Integer id, Boolean collectible, Set<Integer> classIds, Rarity rarity, Integer manaCost, Double health, Double attack, String name, String text, String flavorText, Graphics graphics, LocalDate releaseDate) {
 		Checkers.check("ID can't be negative", id >= 0);
 		this.id = id;
 		this.collectible = collectible;
@@ -32,7 +31,6 @@ public class Card implements Comparable<Card> {
 		this.rarity = rarity;
 		this.manaCost = manaCost;
 		this.health = health;
-		this.armor = armor;
 		Checkers.check("Must have a name.", name.length() > 0);
 		this.name = name;
 		this.text = text;
@@ -41,7 +39,7 @@ public class Card implements Comparable<Card> {
 		this.releaseDate = releaseDate;
 	}
 	
-	public Card(Integer id, Integer collectibleInt, Set<Integer> classIds, Integer rarityInt, Integer manaCost, Double health, Double attack, Double armor, String name, String text, String flavorText, String image, String crop_image, String artist_name, LocalDate releaseDate) {
+	public Card(Integer id, Integer collectibleInt, Set<Integer> classIds, Integer rarityInt, Integer manaCost, Double health, Double attack, String name, String text, String flavorText, String image, String crop_image, String artist_name, LocalDate releaseDate) {
 		Checkers.check("ID can't be negative", id >= 0);
 		this.id = id;
 		this.collectible = collectibleInt.equals(1);
@@ -56,7 +54,6 @@ public class Card implements Comparable<Card> {
 		}
 		this.manaCost = manaCost;
 		this.health = health;
-		this.armor = armor;
 		Checkers.check("Must have a name.", name.length() > 0);
 		this.name = name;
 		this.text = text;
@@ -95,10 +92,6 @@ public class Card implements Comparable<Card> {
 
 	public Double getAttack() {
 		return attack;
-	}
-
-	public Double getArmor() {
-		return armor;
 	}
 
 	public String getName() {

@@ -14,7 +14,7 @@ uvus: PMN9817
     
 ## Estructura del *dataset*
 
-El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la url [https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards](https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards). Originalmente tenía 26 columnas, y cada fila contiene datos sobre una carta de las que se encuentran en el juego base conseguidas usando la API de Blizzard, la desarrolladora del juego. El dataset utilizado en este proyecto tiene 16 columnas: 15 se han tomado del dataset original, y se ha generado aleatoriamente la fecha de salida de la carta. A continuación se describen 
+El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la url [https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards](https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards). Originalmente tenía 26 columnas, y cada fila contiene datos sobre una carta de las que se encuentran en el juego base conseguidas usando la API de Blizzard, la desarrolladora del juego. El dataset utilizado en este proyecto tiene 15 columnas: 14 se han tomado del dataset original, y se ha generado aleatoriamente la fecha de salida de la carta. A continuación se describen 
 
 * `id`: de tipo entero, un número de identificación única para la carta.
 * `collectible`: de tipo booleano (1 o 0). Representa si la carta es coleccionable o no.
@@ -24,7 +24,6 @@ El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la
 * `manaCost`: de tipo entero, el coste de maná de la carta.
 * `health`: de tipo double, los puntos de vida de la carta.
 * `attack`: de tipo double, el ataque de la carta.
-* `armor`: de tipo double, la armadura de la carta.
 * `name`: de tipo string, el nombre de la carta.
 * `text`: de tipo string, el texto presente en combate de la carta.
 * `flavorText`: de tipo string, el texto visible fuera de combate de la carta.
@@ -50,7 +49,6 @@ Todas las propiedades son consultables pero no modificables.
 - `manaCost`: `Integer`, el coste de maná de la carta.
 - `health`: `Double`, los puntos de vida de la carta.
 - `attack`: `Double`, el ataque de la carta.
-- `armor`: `Double`, la armadura de la carta.
 - `name`: `String`, el nombre de la carta.
 - `text`: `String`, el texto presente en combate de la carta.
 - `flavorText`: `String`, el texto visible fuera de combate de la carta.
