@@ -88,7 +88,7 @@ Clase contenedora de los objetos de tipo Card.
 
 **Propiedades**:
 
-- `cards`: `List<Card>`. Consultable, lista de partidas de ajedrez.
+- `cards`: `List<Card>`. Consultable, lista de cartas.
 
 **Constructores**:
 
