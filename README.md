@@ -20,7 +20,7 @@ El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la
 * `collectible`: de tipo booleano (1 o 0). Representa si la carta es coleccionable o no.
 * `classId`: de tipo entero, el número de identificación de la clase principal a la que corresponde.
 * `multiClassIds`: un set de enteros. En caso de que la carta solo tenga una clase, está vacío. En caso de que tenga varias, las incluye todas.
-* `rarityId`: un entero correspondiendo a la rareza de la carta. 1 para Common, 2 para Free, 3 para Rare, 4 para Epic, 5 para Legendary.
+* `rarity`: un entero correspondiendo a la rareza de la carta. 1 para Common, 2 para Free, 3 para Rare, 4 para Epic, 5 para Legendary.
 * `manaCost`: de tipo entero, el coste de maná de la carta.
 * `health`: de tipo double, los puntos de vida de la carta.
 * `attack`: de tipo double, el ataque de la carta.
@@ -45,7 +45,7 @@ Todas las propiedades son consultables pero no modificables.
 - `collectible`: `Boolean`, representa si la carta es coleccionable o no.
 - `slug`: `String`, propiedad derivada. Resumen de la carta con formato `id-nombre`.
 - `classIds`: `Set<Integer>`, el conjunto de clases a las que corresponde la carta. Puede ser solo una.
-- `rarityId`: `Rarity`, la rareza de la carta.
+- `rarity`: `Rarity`, la rareza de la carta.
 - `manaCost`: `Integer`, el coste de maná de la carta.
 - `health`: `Double`, los puntos de vida de la carta.
 - `attack`: `Double`, el ataque de la carta.
