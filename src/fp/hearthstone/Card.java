@@ -76,6 +76,7 @@ public class Card implements Comparable<Card> {
 		return id.toString() + "-" + name;
 	}
 
+
 	public Set<Integer> getClass_ids() {
 		return classIds;
 	}
@@ -87,7 +88,7 @@ public class Card implements Comparable<Card> {
 	public Integer getmanaCost() {
 		return manaCost;
 	}
-
+	
 	public Double getHealth() {
 		return health;
 	}
@@ -115,7 +116,6 @@ public class Card implements Comparable<Card> {
 	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
-
 
 	@Override
 	public String toString() {

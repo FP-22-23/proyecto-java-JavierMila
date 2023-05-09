@@ -33,6 +33,22 @@ public class CardFactory {
 		return result;
 	}
 	
+	public static Cards readCardsStream(String filePath) {
+		Cards result = null;
+		try {
+			Stream<Card> cards = 
+				Files.lines(Paths.get(filePath)).
+				skip(1).
+				map(CardFactory::parseCard);
+			result = new Cards(cards);
+		} catch (IOException e) {
+			System.out.println(filePath + " not found.");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public static Card parseCard(String line) {
 		String[] parts = line.split("·");
 		Checkers.check("Should have 15 camps", parts.length == 15);
