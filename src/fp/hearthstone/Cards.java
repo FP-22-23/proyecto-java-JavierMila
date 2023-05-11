@@ -57,7 +57,7 @@ public class Cards implements Collection<Card> {
 	}
 	
 	// 2.2. Media
-	public <T extends Number> Double average(Function<Card, T> mapper) {
+	public <N extends Number> Double average(Function<Card, N> mapper) {
 		Double totalAttack = 0.;
 		for (Card card : cards) {
 			totalAttack += mapper.apply(card).doubleValue(); // map to attribute, then convert to double
@@ -66,10 +66,10 @@ public class Cards implements Collection<Card> {
 	}
 	
 	// 3.2. Media con Stream
-	public <T extends Number> Double averageStream(Function<Card, T> mapper) {
+	public <N extends Number> Double averageStream(Function<Card, N> mapper) {
 		return cards.stream()
 			.map(mapper) // map to attribute
-			.map(T::doubleValue) // then convert to double
+			.map(N::doubleValue) // then convert to double
 			.reduce(0., Double::sum)
 			/ size(); // divide by size to average
 	}
@@ -223,9 +223,10 @@ public class Cards implements Collection<Card> {
 		return cards.addAll(c);
 	}
 	
-	public static Cards addCards(Cards existing, Cards replacement) {
-		existing.addAll(replacement);
-		return existing;
+	public static Cards addCards(Cards a, Cards b) {
+		Cards newCards = new Cards(a.getCards());
+		newCards.addAll(b);
+		return newCards;
 	}
 	
 	// d. Eliminar un elemento

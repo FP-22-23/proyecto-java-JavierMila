@@ -81,6 +81,7 @@ Clase de factoría para construir listas de cartas.
 
 - `Card parseCard(String line)`: pasa de una línea en el formato del CSV a `Card`.
 - `List<Card> readCards(String filePath)`: lee el CSV especificado en `filePath` y genera una lista de cartas, usando `parseCard` en cada línea.
+- `Cards readCardsStream(String filePath)`: lee el CSV especificado en `filePath` y genera un objeto `Cards` usando streams, mapeando `parseCard` a cada línea.
 
 ### Contenedor - Cards
 
@@ -93,7 +94,8 @@ Clase contenedora de los objetos de tipo Card.
 **Constructores**:
 
 - C1: No toma ningún parámetro, resulta en una lista vacía.
-- C2: Recibe una `List<Cards>`, y la usa para inicializar `cards`.
+- C2: Recibe una `List<Card>` y la usa para inicializar `cards`.
+- C3: Recibe un `Stream<Card>` y lo usa para inicializar `cards`.
 
 **Funciones**:
 Implementa Collection<Card>, por lo que implementa:
@@ -101,13 +103,33 @@ Implementa Collection<Card>, por lo que implementa:
 - `boolean add(Card card)`: Intenta añadir un elemento a la lista y devuelve `true` si lo logra.
 - `boolean addAll(Collection<? extends Card> c)`: Intenta añadir todos los elementos de la lista y devuelve `true` si logra añadir alguno.
 - `boolean remove(Object o)`: Intenta eliminar el objeto de la lista y devuelve `true` si lo logra.
+- `static Cards addCards(Cards a, Cards b)`: Devuelve un objecto Cards que contiene lo mismo que `a` y `b`.
 entre otras.
 
 **Tratamientos Secuenciales**:
-- `boolean exists(Function<Card, Boolean> filter)`: devuelve `true` si algún elemento de la lista hace que `filter` devuelva `true`, false si no.
-- `<T extends Number> Double average(Function<Card, T> key)`: devuelve el promedio de los valores que devuelve `key` a lo largo de la lista.
-- `Cards filter(Function<Card, Boolean> filter)`: devuelve una nueva lista que contiene todos los elementos que hacen que `filter` devuelva `true`.
-- `<T> Map<T, Cards> groupedBy(Function<Card, T> groupBy)`: Agrupa las cartas según el valor que devuelve `groupBy`.
-- `<T, N extends Number> T accumulate(Function<Card, T> key, BinaryOperator<T> sumOp)`: Usando `sumOp` calcula la suma de los valores que devuelve `key`. `sumOp` es necesario ya que Java no implementa una interfaz para tipos sumables. Generalmente, se desea  usar `Integer::sum` o `Double::sum` como sumOp.
-- `<T, N extends Number> Map<T,N> accumulateGroups(Function<Card, T> groupBy, Function<Card,N> key, BinaryOperator<N> sumOp)`: Agrupa las cartas usando como llaves lo que devuelve `groupBy`, y como valores correspondientes la suma usando `sumOp` de lo que devuelve `key`.
+
+*Segunda entrega*:
+- `boolean exists(Predicate<Card> filter)`: devuelve `true` si algún elemento de la lista hace que `filter` devuelva `true`, false si no.
+- `<N extends Number> Double average(Function<Card, N> mapper)`: devuelve el promedio de los valores que devuelve `mapper` a lo largo de la lista.
+- `Cards filter(Predicate<Card> filter)`: devuelve una nueva lista que contiene todos los elementos que hacen que `filter` devuelva `true`.
+- `<K> Map<K, Cards> groupBy(Function<Card, K> keyMapper)`: agrupa las cartas en un mapa usando `keyMapper` para generar las llaves.
+- `<T> T accumulate(Function<Card, T> mapper, BinaryOperator<T> sumOperator)`: Usando `sumOperator` calcula la suma de los valores que devuelve `mapper`. `sumOperator` es necesario ya que Java no implementa una interfaz para tipos con `sum`. Los más comunes son `Integer::sum` o `Double::sum` como sumOp.
+- `<K, V> Map<K, V> accumulateGroups(Function<Card, K> keyMapper, Function<Card, V> valueMapper, BinaryOperator<V> sumOperator)`: Agrupa usando como `keyMapper` para generar las llaves. Los valores son la acumulación usando `sumOperator` de todos los sumandos correspondientes usando `valueMapper`.
+
+*Tercera entrega*:
+- `boolean existsStream(Predicate<Card> filter)`: equivalente a `exists`, pero está implementado con streams.
+- `<N extends Number> Double averageStream(Function<Card, N> mapper)`: equivalente a `average`, pero está implementado con streams.
+- `Cards filterStream(Predicate<Card> filter)`: equivalente a `filter`, pero está implementado con streams.
+- `<T extends Comparable<T>> T filteredMin(Predicate<Card> filter, Function<Card, T> mapper)`: filtra según `filter` y devuelve el mínimo valor correspondiente a través de `mapper`.
+- `<T extends Comparable<T>> T filteredMax(Predicate<Card> filter, Function<Card, T> mapper)`: filtra según `filter` y devuelve el máximo valor correspondiente a través de `mapper`.
+- `Cards filterAndSort(Predicate<Card> filter)`: filtra según `filter` y ordena la lista según el orden natural.
+- `Cards filterAndSort(Predicate<Card> filter, Comparator<Card> comparator)`: filtra según `filter` y ordena según `comparator`.
+- `<K> Map<K, Cards> groupByStream(Function<Card, K> keyMapper)`: equivalente a `groupBy`, pero está implementado con streams.
+- `<T> List<T> mapToList(Function<Card, T> mapper)`: Devuelve una lista de todas los valores correspondientes a las cartas usando `mapper`.
+- `<K, V extends Comparable<V>> Map<K, V> groupedMin(Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Agrupa usando `keyMapper` para generar las llaves. Los valores son el mínimo de los resultados de valueMapper a las cartas.
+- `<K, V extends Comparable<V>> Map<K, V> groupedMax(Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Agrupa usando `keyMapper` para generar las llaves. Los valores son el máximo de los resultados de valueMapper a las cartas.
+- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas ordenados según orden natural.
+- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas ordenados según `comparator`.
+- `<K, V extends Comparable<V>> K maxKey (Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Genera un mapa usando `keyMapper` y `valueMapper`, y devuelve la llave correspondiente al máximo valor.
+
 
