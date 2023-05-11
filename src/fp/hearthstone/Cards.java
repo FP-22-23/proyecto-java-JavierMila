@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import fp.utils.ComparableUtils;
 
 public class Cards implements Collection<Card> {
-	List<Card> cards;
+	private List<Card> cards;
 
 	public Cards() {
 		cards = new ArrayList<Card>();

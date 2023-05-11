@@ -14,7 +14,7 @@ uvus: PMN9817
     
 ## Estructura del *dataset*
 
-El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la url [https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards](https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards). Originalmente tenía 26 columnas, y cada fila contiene datos sobre una carta de las que se encuentran en el juego base conseguidas usando la API de Blizzard, la desarrolladora del juego. El dataset utilizado en este proyecto tiene 15 columnas: 14 se han tomado del dataset original, y se ha generado aleatoriamente la fecha de salida de la carta. A continuación se describen 
+El dataset Hearthstone: Heroes of Warcraft Standard Cards se puede obtener de la url [https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards](https://www.kaggle.com/datasets/davbyron/hearthstone-standard-cards). Originalmente tenía 26 columnas, y cada fila contiene datos sobre una carta de las que se encuentran en el juego base conseguidas usando la API de Blizzard, la desarrolladora del juego. El dataset utilizado en este proyecto tiene 15 columnas: 14 se han tomado del dataset original, y la última se ha generado aleatoriamente (representa la fecha de salida de la carta). A continuación se describen 
 
 * `id`: de tipo entero, un número de identificación única para la carta.
 * `collectible`: de tipo booleano (1 o 0). Representa si la carta es coleccionable o no.
@@ -73,7 +73,7 @@ Todas las propiedades son consultables pero no modificables.
 #### Tipos auxiliares
 
 - Rarity, enumerado. Puede tomar los valores `COMMON`, `FREE`, `RARE`, `EPIC` o `LEGENDARY`.
-- Grahpics, record. Contiene la imagen sin recortar, la imagen recortada y el nombre del artista de una carta.
+- Grahpics, record. Contiene el link a la imagen sin recortar, el link a la imagen recortada y el nombre del artista de una carta.
 
 ### Factoría - CardFactory
 
@@ -109,12 +109,12 @@ entre otras.
 **Tratamientos Secuenciales**:
 
 *Segunda entrega*:
-- `boolean exists(Predicate<Card> filter)`: devuelve `true` si algún elemento de la lista hace que `filter` devuelva `true`, false si no.
-- `<N extends Number> Double average(Function<Card, N> mapper)`: devuelve el promedio de los valores que devuelve `mapper` a lo largo de la lista.
-- `Cards filter(Predicate<Card> filter)`: devuelve una nueva lista que contiene todos los elementos que hacen que `filter` devuelva `true`.
+- `boolean exists(Predicate<Card> filter)`: devuelve `true` si algún elemento de la lista cumple con `filter`. Si no, devuelve `false`.
+- `<N extends Number> Double average(Function<Card, N> mapper)`: devuelve el promedio de los valores que devuelve `mapper`.
+- `Cards filter(Predicate<Card> filter)`: devuelve una lista con todos los elementos que cumplen con `filter`.
 - `<K> Map<K, Cards> groupBy(Function<Card, K> keyMapper)`: agrupa las cartas en un mapa usando `keyMapper` para generar las llaves.
-- `<T> T accumulate(Function<Card, T> mapper, BinaryOperator<T> sumOperator)`: Usando `sumOperator` calcula la suma de los valores que devuelve `mapper`. `sumOperator` es necesario ya que Java no implementa una interfaz para tipos con `sum`. Los más comunes son `Integer::sum` o `Double::sum` como sumOp.
-- `<K, V> Map<K, V> accumulateGroups(Function<Card, K> keyMapper, Function<Card, V> valueMapper, BinaryOperator<V> sumOperator)`: Agrupa usando como `keyMapper` para generar las llaves. Los valores son la acumulación usando `sumOperator` de todos los sumandos correspondientes usando `valueMapper`.
+- `<T> T accumulate(Function<Card, T> mapper, BinaryOperator<T> sumOperator)`: Usando `sumOperator`, calcula la suma de los valores que devuelve `mapper`. `sumOperator` es necesario ya que Java no implementa una interfaz para tipos con `sum`. Los más comunes son `Integer::sum` o `Double::sum`.
+- `<K, V> Map<K, V> accumulateGroups(Function<Card, K> keyMapper, Function<Card, V> valueMapper, BinaryOperator<V> sumOperator)`: Agrupa usando `keyMapper` para generar las llaves. Los valores son la acumulación usando `sumOperator` de todos los sumandos correspondientes usando `valueMapper`.
 
 *Tercera entrega*:
 - `boolean existsStream(Predicate<Card> filter)`: equivalente a `exists`, pero está implementado con streams.
@@ -128,8 +128,8 @@ entre otras.
 - `<T> List<T> mapToList(Function<Card, T> mapper)`: Devuelve una lista de todas los valores correspondientes a las cartas usando `mapper`.
 - `<K, V extends Comparable<V>> Map<K, V> groupedMin(Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Agrupa usando `keyMapper` para generar las llaves. Los valores son el mínimo de los resultados de valueMapper a las cartas.
 - `<K, V extends Comparable<V>> Map<K, V> groupedMax(Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Agrupa usando `keyMapper` para generar las llaves. Los valores son el máximo de los resultados de valueMapper a las cartas.
-- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas ordenados según orden natural.
-- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas ordenados según `comparator`.
+- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas (ordenados según orden natural).
+- `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas (ordenados según `comparator`).
 - `<K, V extends Comparable<V>> K maxKey (Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Genera un mapa usando `keyMapper` y `valueMapper`, y devuelve la llave correspondiente al máximo valor.
 
 ### utils - Checkers
