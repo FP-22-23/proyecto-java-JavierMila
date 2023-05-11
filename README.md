@@ -132,4 +132,11 @@ entre otras.
 - `<K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN)`: Agrupa en un `SortedMap` usando `keyMapper` para generar las llaves. Los valores son los `topN` mayores resultados de aplicar `valueMapper` a las cartas ordenados según `comparator`.
 - `<K, V extends Comparable<V>> K maxKey (Function<Card, K> keyMapper, Function<Card, V> valueMapper)`: Genera un mapa usando `keyMapper` y `valueMapper`, y devuelve la llave correspondiente al máximo valor.
 
+### utils - Checkers
+Solo contiene una función:
+- `static void check(String textoRestricción, Boolean condición)`: levanta una `IllegalArgumentException` con `textoRestricción` si no se cumple `condición`.
 
+### utils - ComparableUtils
+Contiene dos funciones:
+- `static <T extends Comparable<T>> T min(T left, T right)`: una implementación del `BinaryOperator<T> min` (mínimo) para cualquier tipo comparable.
+- `static <T extends Comparable<T>> T max(T left, T right)`: una implementación del `BinaryOperator<T> max` (máximo) para cualquier tipo comparable.
