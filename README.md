@@ -137,6 +137,6 @@ Solo contiene una función:
 - `static void check(String textoRestricción, Boolean condición)`: levanta una `IllegalArgumentException` con `textoRestricción` si no se cumple `condición`.
 
 ### utils - ComparableUtils
-Contiene dos funciones:
-- `static <T extends Comparable<T>> T min(T left, T right)`: una implementación del `BinaryOperator<T> min` (mínimo) para cualquier tipo comparable.
-- `static <T extends Comparable<T>> T max(T left, T right)`: una implementación del `BinaryOperator<T> max` (máximo) para cualquier tipo comparable.
+Contiene implementaciones de la función `min` y `max` para cualquier tipo comparable:
+- `static <T extends Comparable<T>> T min(T left, T right)`
+- `static <T extends Comparable<T>> T max(T left, T right)`
