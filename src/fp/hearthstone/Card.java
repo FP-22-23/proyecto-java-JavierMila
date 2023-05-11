@@ -11,28 +11,29 @@ import fp.utils.Checkers;
 public class Card implements Comparable<Card> {
 	private Integer id;
 	private Boolean collectible;
-	private Set<Integer> classIds;
-	private Rarity rarity;
+	private Set<Integer> classIds; // Tipo conjunto
+	private Rarity rarity; // Tipo auxiliar
 	private Integer manaCost;
 	private Double health;
 	private Double attack;
 	private String name;
-	private String text;
+	private String text;	
 	private String flavorText;
 	private Graphics graphics;
 	private LocalDate releaseDate;
 	
+	// 1.1. Dos constructores
 	public Card(Integer id, Boolean collectible, Set<Integer> classIds, Rarity rarity, Integer manaCost, Double health, Double attack, String name, String text, String flavorText, Graphics graphics, LocalDate releaseDate) {
-		Checkers.check("ID can't be negative", id >= 0);
+		Checkers.check("ID can't be negative", id >= 0); // 1.6. Restricción
 		this.id = id;
 		this.collectible = collectible;
-		Checkers.check("Must have a class.", classIds.size() > 0);
+		Checkers.check("Must have a class.", classIds.size() > 0); // 1.6. Restricción
 		this.classIds = classIds;
 		this.rarity = rarity;
 		this.manaCost = manaCost;
 		this.health = health;
 		this.attack = attack;
-		Checkers.check("Must have a name.", name.length() > 0);
+		Checkers.check("Must have a name.", name.length() > 0); // 1.6. Restricción
 		this.name = name;
 		this.text = text;
 		this.flavorText = flavorText;
@@ -41,10 +42,10 @@ public class Card implements Comparable<Card> {
 	}
 	
 	public Card(Integer id, Integer collectibleInt, Set<Integer> classIds, Integer rarityInt, Integer manaCost, Double health, Double attack, String name, String text, String flavorText, String image, String crop_image, String artist_name, LocalDate releaseDate) {
-		Checkers.check("ID can't be negative", id >= 0);
+		Checkers.check("ID can't be negative", id >= 0); // 1.6. Restricción
 		this.id = id;
 		this.collectible = collectibleInt.equals(1);
-		Checkers.check("Must have a class.", classIds.size() > 0);
+		Checkers.check("Must have a class.", classIds.size() > 0); // 1.6. Restricción
 		this.classIds = classIds;
 		switch (rarityInt) {
 		case 1: this.rarity = Rarity.COMMON; break;
@@ -56,7 +57,7 @@ public class Card implements Comparable<Card> {
 		this.manaCost = manaCost;
 		this.health = health;
 		this.attack = attack;
-		Checkers.check("Must have a name.", name.length() > 0);
+		Checkers.check("Must have a name.", name.length() > 0); // 1.6. Restricción
 		this.name = name;
 		this.text = text;
 		this.flavorText = flavorText;
@@ -72,7 +73,7 @@ public class Card implements Comparable<Card> {
 		return collectible;
 	}
 	
-	public String getSlug() {
+	public String getSlug() { // 1.2. Propiedad derivada
 		return id.toString() + "-" + name;
 	}
 
@@ -118,7 +119,7 @@ public class Card implements Comparable<Card> {
 	}
 
 	@Override
-	public String toString() {
+	public String toString() { // 1.3. Representación como cadena
 		return "Card [id=" + id + ", rarity=" + rarity + ", name=" + name + "]";
 	}
 
@@ -128,7 +129,7 @@ public class Card implements Comparable<Card> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) { // 1.4. Criterio de igualdad
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -139,7 +140,7 @@ public class Card implements Comparable<Card> {
 		return Objects.equals(id, other.id) && rarity == other.rarity;
 	}
 
-	public int compareTo(Card card) {
+	public int compareTo(Card card) { // 1.5. Orden natural
 		
 		int res = getRarity().compareTo(card.getRarity());
 		if (res == 0) {

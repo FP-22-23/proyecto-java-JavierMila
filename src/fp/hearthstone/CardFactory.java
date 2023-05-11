@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import fp.hearthstone.Card;
 
 import fp.utils.Checkers;
 

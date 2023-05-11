@@ -9,18 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.swing.text.html.Option;
 
 import fp.utils.ComparableUtils;
 
@@ -49,7 +44,7 @@ public class Cards implements Collection<Card> {
 	}
 	
 	// 2.1. Existe
-	public boolean exists(Predicate<Card> filter) { // Note: Equivalent to contains, but is required to be made with a loop.
+	public boolean exists(Predicate<Card> filter) {
 		for (Card card : cards) {
 			if (filter.test(card)) { return true; }
 		}
@@ -65,7 +60,7 @@ public class Cards implements Collection<Card> {
 	public <T extends Number> Double average(Function<Card, T> mapper) {
 		Double totalAttack = 0.;
 		for (Card card : cards) {
-			totalAttack += mapper.apply(card).doubleValue(); // map to attribute, then conver to double
+			totalAttack += mapper.apply(card).doubleValue(); // map to attribute, then convert to double
 		}
 		return totalAttack / size();
 	}
@@ -74,9 +69,9 @@ public class Cards implements Collection<Card> {
 	public <T extends Number> Double averageStream(Function<Card, T> mapper) {
 		return cards.stream()
 			.map(mapper) // map to attribute
-			.map(T::doubleValue)
+			.map(T::doubleValue) // then convert to double
 			.reduce(0., Double::sum)
-			/ size();
+			/ size(); // divide by size to average
 	}
 	
 	// 2.3. Filtro
@@ -98,12 +93,18 @@ public class Cards implements Collection<Card> {
 	
 	// 3.4. Mínimo filtrado
 	public <T extends Comparable<T>> T filteredMin(Predicate<Card> filter, Function<Card, T> mapper) {
-		return stream().filter(filter).map(mapper).min(Comparator.naturalOrder()).get();
+		return stream()
+			.filter(filter)
+			.map(mapper)
+			.min(Comparator.naturalOrder()).get();
 	}
 	
 	// 3.4. Máximo filtrado
 	public <T extends Comparable<T>> T filteredMax(Predicate<Card> filter, Function<Card, T> mapper) {
-		return stream().filter(filter).map(mapper).max(Comparator.naturalOrder()).get();
+		return stream()
+			.filter(filter)
+			.map(mapper)
+			.max(Comparator.naturalOrder()).get();
 	}
 	
 	// 3.5. Filtrado y ordenación
@@ -116,35 +117,35 @@ public class Cards implements Collection<Card> {
 	}
 	
 	// 2.4. Agrupación
-	public <T> Map<T, Cards> groupBy(Function<Card, T> keyMapper) {
-		Map<T, Cards> grouped = new HashMap<T, Cards>();
+	public <K> Map<K, Cards> groupBy(Function<Card, K> keyMapper) {
+		Map<K, Cards> grouped = new HashMap<K, Cards>();
 		
 		for (Card card : cards) {
-			T group = keyMapper.apply(card);
-			if (!grouped.containsKey(group)) {
-				grouped.put(group, new Cards());
+			K key = keyMapper.apply(card); 
+			if (!grouped.containsKey(key)) { // if it doesn't contain the key, create a list
+				grouped.put(key, new Cards());
 			}
-			grouped.get(group).add(card);
+			grouped.get(key).add(card); // if it does, add the card to it
 		}
 		
 		return grouped;
 	}
 	
 	// 3.6. Agrupación con Streams
-	public <T> Map<T, Cards> groupByStream(Function<Card, T> keyMapper) {
-		return stream().collect( Collectors.toMap( keyMapper, Cards::new, Cards::addCards ));
+	public <K> Map<K, Cards> groupByStream(Function<Card, K> keyMapper) {
+		return stream().collect( Collectors.toMap(keyMapper, Cards::new, Cards::addCards ));
 	}
 
-	public <T extends Number> T accumulate(Function<Card, T> mapper, BinaryOperator<T> sumOperator) {
+	public <T> T accumulate(Function<Card, T> mapper, BinaryOperator<T> sumOperator) {
 		return stream().map(mapper).reduce(sumOperator).get();
 	}
 	
 	// 2.5. Agrupación y acumulación
-	public <T, N extends Number> Map<T, N> accumulateGroups(Function<Card, T> keyMapper, Function<Card, N> valueMapper, BinaryOperator<N> sumOperator) {
-		Map<T, Cards> grouped = groupBy(keyMapper);
-		Map<T, N> accumulated = new HashMap<T, N>();
-		for (Entry<T, Cards> entry : grouped.entrySet()) {
-			accumulated.put(entry.getKey(), entry.getValue().accumulate(valueMapper, sumOperator));
+	public <K, V> Map<K, V> accumulateGroups(Function<Card, K> keyMapper, Function<Card, V> valueMapper, BinaryOperator<V> sumOperator) {
+		Map<K, Cards> grouped = groupBy(keyMapper);
+		Map<K, V> accumulated = new HashMap<K, V>();
+		for (Entry<K, Cards> entry : grouped.entrySet()) { // For each key
+			accumulated.put(entry.getKey(), entry.getValue().accumulate(valueMapper, sumOperator)); // Accumulate the values
 		}
 		return accumulated;
 	}
@@ -155,45 +156,47 @@ public class Cards implements Collection<Card> {
 	}
 	
 	// 3.8. Map con los mínimos
-	public <T, N extends Comparable<N>> Map<T, N> groupedMin(Function<Card, T> keyMapper, Function<Card, N> valueMapper) {
+	public <K, V extends Comparable<V>> Map<K, V> groupedMin(Function<Card, K> keyMapper, Function<Card, V> valueMapper) {
 		return cards.stream().collect( Collectors.toMap( keyMapper, valueMapper, ComparableUtils::min ));
 	}
 	// 3.8. Map con los máximos
-	public <T, N extends Comparable<N>> Map<T, N> groupedMax(Function<Card, T> keyMapper, Function<Card, N> valueMapper) {
+	public <K, V extends Comparable<V>> Map<K, V> groupedMax(Function<Card, K> keyMapper, Function<Card, V> valueMapper) {
 		return cards.stream().collect( Collectors.toMap( keyMapper, valueMapper, ComparableUtils::max ));
 	}
 	
 	// 3.9. SortedMap top N
-	public <T, N extends Comparable<N>> SortedMap<T, List<N>> groupedTopN(Function<Card, T> keyMapper, Function<Card, N> valueMapper, int topN) {
+	public <K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, int topN) {
 		return cards.stream().collect(
-			Collectors.groupingBy(
+			Collectors.groupingBy( // can't use Collectors.toMap() because it's a SortedMap
 				keyMapper,
-				TreeMap::new,
+				TreeMap::new, // needed to make a SortedMap
 				Collectors.collectingAndThen(
-					Collectors.toList(),
-					cards -> cards.stream().map(valueMapper).sorted().limit(topN).toList()
+					Collectors.toList(), // After collecting to list,
+					cards -> cards.stream().map(valueMapper).sorted().limit(topN).toList() // keep top N after mapping
 				)
 			)
 		);
 	}
 	
-	public <T, N extends Comparable<N>> SortedMap<T, List<N>> groupedTopN(Function<Card, T> keyMapper, Function<Card, N> valueMapper, Comparator<N> comparator, int topN) {
+	public <K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN) {
 		return cards.stream().collect(
-			Collectors.groupingBy(
+			Collectors.groupingBy( // can't use Collectors.toMap() because it's a SortedMap
 				keyMapper,
-				TreeMap::new,
+				TreeMap::new, // needed to make a SortedMap
 				Collectors.collectingAndThen(
-					Collectors.toList(),
-					cards -> cards.stream().map(valueMapper).sorted(comparator).limit(topN).toList()
+					Collectors.toList(), // After collecting to list,
+					cards -> cards.stream().map(valueMapper).sorted(comparator).limit(topN).toList() // keep top N after mapping
 				)
 			)
 		);
 	}
 	
 	// 3.10. Devuelve la llave del mayor valor agrupando
-	public <T, N extends Comparable<N>> T maxKey (Function<Card, T> keyMapper, Function<Card, N> valueMapper) {
-		Map<T, N> groupedMax = groupedMax(keyMapper, valueMapper);
-		T maxKey = groupedMax.entrySet().stream().max(Comparator.comparing(Entry::getValue)).get().getKey();
+	public <K, V extends Comparable<V>> K maxKey (Function<Card, K> keyMapper, Function<Card, V> valueMapper) {
+		Map<K, V> groupedMax = groupedMax(keyMapper, valueMapper);
+		K maxKey = groupedMax.entrySet().stream() // Get entry stream
+			.max(Comparator.comparing(Entry::getValue)) // Get maximum value
+			.get().getKey(); // Get corresponding key
 		return maxKey;
 	}
 	
@@ -268,6 +271,10 @@ public class Cards implements Collection<Card> {
 	
 	public int hashCode() {
 		return Objects.hash(cards);
+	}
+	
+	public List<Card> subList(int fromIndex, int toIndex) {
+		return cards.subList(fromIndex, toIndex);
 	}
 
 	public boolean equals(Object obj) {
