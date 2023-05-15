@@ -109,7 +109,7 @@ public class Cards implements Collection<Card> {
 	
 	// 3.5. Filtrado y ordenación
 	public Cards filterAndSort(Predicate<Card> filter) {
-		return new Cards(stream().filter(filter).sorted());
+		return filterAndSort(filter, Comparator.naturalOrder());
 	}
 	
 	public Cards filterAndSort(Predicate<Card> filter, Comparator<Card> comparator) {
@@ -166,16 +166,7 @@ public class Cards implements Collection<Card> {
 	
 	// 3.9. SortedMap top N
 	public <K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, int topN) {
-		return cards.stream().collect(
-			Collectors.groupingBy( // can't use Collectors.toMap() because it's a SortedMap
-				keyMapper,
-				TreeMap::new, // needed to make a SortedMap
-				Collectors.collectingAndThen(
-					Collectors.toList(), // After collecting to list,
-					cards -> cards.stream().map(valueMapper).sorted().limit(topN).toList() // keep top N after mapping
-				)
-			)
-		);
+		return groupedTopN(keyMapper, valueMapper, Comparator.naturalOrder(), topN);
 	}
 	
 	public <K, V extends Comparable<V>> SortedMap<K, List<V>> groupedTopN(Function<Card, K> keyMapper, Function<Card, V> valueMapper, Comparator<V> comparator, int topN) {
